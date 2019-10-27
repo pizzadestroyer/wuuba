@@ -5,7 +5,7 @@ import * as actions from "../actions";
 
 const initialState = {
   channel: {
-    id: '',
+    _id: '',
     name: ''
   }
 };

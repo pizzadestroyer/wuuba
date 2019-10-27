@@ -3,10 +3,10 @@ import { useMutation } from '@apollo/react-hooks';
 import { POST_MESSAGE } from './gql/message/index';
 import useGlobal from "./store";
 
-function sendMessage(e, message, setMessage, postMessage, channel) {
+function sendMessage(e, message, setMessage, postMessage, channel_id) {
   if (e.key === 'Enter') {
     e.preventDefault();
-    postMessage({ variables: { author: 'Me', body: message, channelId: channel } });
+    postMessage({ variables: { channel_id: channel_id, author: 'Me', body: message } });
     setMessage('');
   }
 }
@@ -22,7 +22,7 @@ function MessageInput() {
       placeholder={globalState.channel.name}
       value={message}
       onChange={e => setMessage(e.target.value)}
-      onKeyDown={e => sendMessage(e, message, setMessage, postMessage, globalState.channel)}/>
+      onKeyDown={e => sendMessage(e, message, setMessage, postMessage, globalState.channel._id)}/>
   );
 }
 

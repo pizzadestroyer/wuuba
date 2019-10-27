@@ -10,7 +10,7 @@ function setChannel(action, channel) {
 
 function ChannelList() {
   const [globalState, globalActions] = useGlobal();
-  const { loading, error, data } = useQuery(GET_CHANNELS, { variables: globalState.channel.id});
+  const { loading, error, data } = useQuery(GET_CHANNELS, { variables: globalState.channel._id});
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error</p>;
@@ -18,7 +18,7 @@ function ChannelList() {
   return (
     <div>
       {data.channels.map((channel) => (
-        <p key={channel.id} onClick={() => setChannel(globalActions.setChannel, channel)}>{channel.name}</p>
+        <p key={channel._id} onClick={() => setChannel(globalActions.setChannel, channel)}>{channel.name}</p>
       ))}
     </div>
   );
