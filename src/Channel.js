@@ -7,7 +7,7 @@ import useGlobal from "./store";
 function Channel() {
   const [globalState, globalActions] = useGlobal();
   const { loading, error, data, subscribeToMore } = useQuery(GET_MESSAGES, { variables: { channel_id: globalState.channel._id} });
-  
+
   const subscribeToNew = useCallback(() => subscribeToMore({
     document: MESSAGES_SUBSCRIPTION,
     updateQuery: (prev, { subscriptionData }) => {

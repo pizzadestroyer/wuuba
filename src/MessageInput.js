@@ -6,7 +6,7 @@ import useGlobal from "./store";
 function sendMessage(e, message, setMessage, postMessage, channel_id) {
   if (e.key === 'Enter') {
     e.preventDefault();
-    postMessage({ variables: { channel_id: channel_id, author: 'Me', body: message } });
+    postMessage({ variables: { channel_id: channel_id, body: message } });
     setMessage('');
   }
 }
