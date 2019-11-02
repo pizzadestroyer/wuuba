@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
 import produce from 'immer';
 import { useQuery } from '@apollo/react-hooks';
-import { GET_MESSAGES, MESSAGES_SUBSCRIPTION } from './gql/message/index';
-import useGlobal from "./store";
+import { GET_MESSAGES, MESSAGES_SUBSCRIPTION } from '../../gql/message/index';
+import useGlobal from "../../store";
 
 function Channel() {
   const [globalState, globalActions] = useGlobal();

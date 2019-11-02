@@ -1,12 +1,4 @@
-import { gql } from 'apollo-boost';
-
-export const GET_CHANNELS = gql`{
-  channels {
-    _id
-    name
-  }
-}
-`
+import { gql } from 'apollo-boost'
 
 export const GET_MESSAGES = gql`
 query Messages($channel_id: String!) {
@@ -17,7 +9,7 @@ query Messages($channel_id: String!) {
     body
   }
 }
-`;
+`
 
 export const MESSAGES_SUBSCRIPTION = gql`
   subscription MessagePosted {
@@ -28,7 +20,7 @@ export const MESSAGES_SUBSCRIPTION = gql`
       body
     }
   }
-`;
+`
 
 export const POST_MESSAGE = gql`
 mutation PostMessage($body: String!, $channel_id: String!) {
@@ -38,4 +30,4 @@ mutation PostMessage($body: String!, $channel_id: String!) {
     body
   }
 }
-`;
+`

@@ -1,21 +1,14 @@
 import React from 'react';
-import './App.css';
-import SignUp from './SignUp'
-import Login from './Login'
-import Channel from './Channel';
-import MessageInput from './MessageInput';
-import ChannelList from './ChannelList';
+import Auth from './components/auth/'
+import Chat from './components/chat/'
 
-function App() {
-  return (
-    <div className="App">
-      <SignUp></SignUp>
-      <Login></Login>
-      <ChannelList></ChannelList>
-      <Channel></Channel>
-      <MessageInput></MessageInput>
-    </div>
-  );
+const App = () => {
+  const token = localStorage.getItem('AUTH_TOKEN')
+  if (!token) {
+    return <Auth></Auth>
+  } else {
+    return <Chat></Chat>
+  }
 }
 
 export default App;

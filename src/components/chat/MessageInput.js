@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import { POST_MESSAGE } from './gql/message/index';
-import useGlobal from "./store";
+import { POST_MESSAGE } from '../../gql/message/index';
+import useGlobal from "../../store";
 
 function sendMessage(e, message, setMessage, postMessage, channel_id) {
   if (e.key === 'Enter') {
