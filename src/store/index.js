@@ -7,6 +7,9 @@ const initialState = {
   channel: {
     _id: '',
     name: ''
+  },
+  thread: {
+    _id: undefined
   }
 };
 

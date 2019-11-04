@@ -1,12 +1,18 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
 
+import useGlobal from "../../store";
+
 import Channel from './Channel'
 import MessageInput from './MessageInput'
 import ChannelList from './ChannelList'
 import CreateChannel from './CreateChannel'
+import Thread from './Thread'
 
 const Chat = () => {
+
+  const [globalState] = useGlobal();
+
   return (
     <div>
       <Grid container>
@@ -15,7 +21,7 @@ const Chat = () => {
           <CreateChannel></CreateChannel>
         </Grid>
         <Grid item xs={9}>
-          <Channel></Channel>
+          {globalState.thread._id ? <Thread></Thread> : <Channel></Channel>}
           <MessageInput></MessageInput>
         </Grid>
       </Grid>

@@ -4,10 +4,6 @@ import { useQuery } from '@apollo/react-hooks';
 import useGlobal from "../../store";
 import { GET_CHANNELS , CHANNELS_SUBSCRIPTION} from '../../gql/channel/index';
 
-function setChannel(action, channel) {
-  action(channel);
-}
-
 function ChannelList() {
   const [globalState, globalActions] = useGlobal();
   const { loading, error, data, subscribeToMore } = useQuery(GET_CHANNELS, { variables: globalState.channel._id})
@@ -30,7 +26,11 @@ function ChannelList() {
   return (
     <div>
       {data.channels.map((channel) => (
-        <p key={channel._id} onClick={() => setChannel(globalActions.setChannel, channel)}>{channel.name}</p>
+        <p key={channel._id} onClick={() => {
+          globalActions.setChannel(channel)
+          globalActions.setThread(undefined)
+        }}>
+        {channel.name}</p>
       ))}
     </div>
   )
