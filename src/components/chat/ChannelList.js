@@ -7,7 +7,7 @@ import { GET_CHANNELS , CHANNELS_SUBSCRIPTION} from '../../gql/channel/index';
 function ChannelList() {
   const [globalState, globalActions] = useGlobal();
   const { loading, error, data, subscribeToMore } = useQuery(GET_CHANNELS, { variables: globalState.channel._id})
-
+  
   const subscribeToNew = useCallback(() => subscribeToMore({
     document: CHANNELS_SUBSCRIPTION,
     updateQuery: (prev, { subscriptionData }) => {
@@ -19,7 +19,6 @@ function ChannelList() {
   }))
 
   useEffect(() => subscribeToNew()) 
-
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error</p>
 

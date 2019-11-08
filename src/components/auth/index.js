@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import { LOGIN, SIGN_UP } from '../../gql/auth'
+import useGlobal from "../../store";
+import { useAuth } from "../../context/auth";
 
 const Auth = () => {
   const [accountExists, setAccountExists] = useState(true)
@@ -8,6 +10,7 @@ const Auth = () => {
   const [signup] = useMutation(SIGN_UP)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const { setAuthToken } = useAuth();
 
   const handleClick = (e) => {
     e.preventDefault()
@@ -18,10 +21,10 @@ const Auth = () => {
     e.preventDefault()
     if (accountExists) {
       const authToken = await login({ variables: { username: username, password: password } });
-      localStorage.setItem('AUTH_TOKEN', authToken.data.login.token)
+      setAuthToken(authToken.data.login.token)
     } else {
       const authToken = await signup({ variables: { username: username, password: password } });
-      localStorage.setItem('AUTH_TOKEN', authToken.data.signup.token) 
+      setAuthToken(authToken.data.login.token)
     }
   }
 

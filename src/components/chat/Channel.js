@@ -3,13 +3,13 @@ import produce from 'immer'
 import { useQuery } from '@apollo/react-hooks'
 import { GET_MESSAGES, MESSAGES_SUBSCRIPTION } from '../../gql/message/index'
 import useGlobal from "../../store"
-import Button from '@material-ui/core/Button'
+import Message from './Message'
 
 const Channel = () => {
-  const [globalState, globalActions] = useGlobal();
+  const [globalState] = useGlobal();
   const { loading, error, data, subscribeToMore } = useQuery(GET_MESSAGES, { variables: { channel_id: globalState.channel._id} })
-
-  const subscribeToNew = useCallback(() => subscribeToMore({
+  
+  const subscribeToMessages = useCallback(() => subscribeToMore({
     document: MESSAGES_SUBSCRIPTION,
     updateQuery: (prev, { subscriptionData }) => {
       if (!subscriptionData.data) return prev
@@ -20,17 +20,17 @@ const Channel = () => {
     }
   }));
 
-  useEffect(() => subscribeToNew());  
+  useEffect(() => subscribeToMessages()) 
 
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error</p>
-
+  
   return (
     <div>
       <h1>Channel: {globalState.channel.name}</h1>
-      {data.messages.map(({_id, author, body }) => (
-        <p key={_id}>{author}: {body} <Button onClick={e => globalActions.setThread(_id)}>Reply</Button></p>
-      ))}
+      {data.messages.map(({_id, author, body, replies }) => 
+        <Message key={_id} id={_id} author={author} body={body} replies={replies}></Message>
+      )}
     </div>
   )
 }

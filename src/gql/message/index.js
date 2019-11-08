@@ -7,6 +7,12 @@ export const GET_MESSAGES = gql`
       channel_id
       author
       body
+      replies {
+        _id
+        message_id
+        author
+        body
+      }
     }
   }`
 
@@ -17,6 +23,12 @@ export const MESSAGES_SUBSCRIPTION = gql`
       channel_id
       author
       body
+      replies {
+        _id
+        message_id
+        author
+        body
+      }
     }
   }`
 
@@ -37,6 +49,12 @@ export const POST_MESSAGE = gql`
       channel_id
       author
       body
+      replies {
+        _id
+        message_id
+        author
+        body
+      }
     }
   }`
 
