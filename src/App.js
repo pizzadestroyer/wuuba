@@ -1,21 +1,48 @@
-import React, { useState }  from 'react';
+import React, { useContext }  from 'react'
 import Auth from './components/auth/'
 import Chat from './components/chat/'
-import { AuthContext } from './context/auth'
+import { StateProvider } from './context/state'
 
 const App = () => {
-  const [authToken, setAuthToken] = useState();
-
-  const setToken = (data) => {
-    localStorage.setItem('AUTH_TOKEN', data)
-    setAuthToken(data)
+  const initialState = {
+    authToken: undefined,
+    channelId: undefined,
+    channelName: undefined,
+    threadId: undefined
   }
-  
+
+  const reducer = (state, action) => {
+    switch(action.type) {
+      case 'setAuthToken': 
+        return {
+          ...state,
+          authToken: action.authToken
+        }
+      case 'setChannelId':
+        return {
+          ...state,
+          channelId: action.channelId
+        }
+      case 'setChannelName':
+        return {
+          ...state,
+          channelName: action.channelName
+        }
+      case 'setThreadId':
+        return {
+          ...state,
+          threadId: action.threadId
+        }
+      default: 
+        return state
+    }
+  }
 
   return (
-    <AuthContext.Provider value={{ authToken, setAuthToken: setToken }}>
-      {authToken ? <Chat></Chat> : <Auth></Auth>}
-    </AuthContext.Provider>
+    <StateProvider initialState={initialState} reducer={reducer}>
+      <Auth></Auth>
+      <Chat></Chat>
+    </StateProvider>
   )
 }
 

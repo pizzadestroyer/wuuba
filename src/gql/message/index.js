@@ -1,15 +1,15 @@
 import { gql } from 'apollo-boost'
 
 export const GET_MESSAGES = gql`
-  query Messages($channel_id: String!) {
-    messages(channel_id: $channel_id) {
+  query Messages($channelId: String!) {
+    messages(channelId: $channelId) {
       _id
-      channel_id
+      channelId
       author
       body
       replies {
         _id
-        message_id
+        messageId
         author
         body
       }
@@ -20,12 +20,12 @@ export const MESSAGES_SUBSCRIPTION = gql`
   subscription MessagePosted {
     messagePosted {
       _id
-      channel_id
+      channelId
       author
       body
       replies {
         _id
-        message_id
+        messageId
         author
         body
       }
@@ -36,22 +36,22 @@ export const REPLIES_SUBSCRIPTION = gql`
   subscription ReplyPosted {
     replyPosted {
       _id
-      message_id
+      messageId
       author
       body
     }
   }`
 
 export const POST_MESSAGE = gql`
-  mutation PostMessage($body: String!, $channel_id: String!) {
-    postMessage(body: $body, channel_id: $channel_id) {
+  mutation PostMessage($body: String!, $channelId: String!) {
+    postMessage(body: $body, channelId: $channelId) {
       _id
-      channel_id
+      channelId
       author
       body
       replies {
         _id
-        message_id
+        messageId
         author
         body
       }
@@ -59,8 +59,8 @@ export const POST_MESSAGE = gql`
   }`
 
 export const POST_REPLY = gql`
-  mutation PostReply($body: String!, $message_id: String!) {
-    postReply(body: $body, message_id: $message_id) {
+  mutation PostReply($body: String!, $messageId: String!) {
+    postReply(body: $body, messageId: $messageId) {
       _id
       author
       body
@@ -68,10 +68,10 @@ export const POST_REPLY = gql`
   }`
 
 export const GET_THREAD = gql`
-  query Thread($message_id: String!) {
-    thread(message_id: $message_id) {
+  query Thread($messageId: String!) {
+    thread(messageId: $messageId) {
       _id
-      channel_id
+      channelId
       author
       body
       replies {

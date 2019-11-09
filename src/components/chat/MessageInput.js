@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { useMutation } from '@apollo/react-hooks';
-import { POST_MESSAGE, POST_REPLY } from '../../gql/message/index';
-import useGlobal from "../../store";
+import React, { useState } from 'react'
+import { useMutation } from '@apollo/react-hooks'
+import { POST_MESSAGE, POST_REPLY } from '../../gql/message/index'
+import { useStateValue } from '../../context/state'
 
 const MessageInput = () =>  {
-  const [postMessage] = useMutation(POST_MESSAGE);
-  const [postReply] = useMutation(POST_REPLY);
-  const [message, setMessage] = useState('');
-  const [globalState] = useGlobal();
+  const [{channelName, channelId, threadId}] = useStateValue()
+  const [postMessage] = useMutation(POST_MESSAGE)
+  const [postReply] = useMutation(POST_REPLY)
+  const [message, setMessage] = useState('')
 
-  const sendMessage = (e, message, setMessage, postMessage, channel_id, message_id) => {
+  const sendMessage = (e, message, setMessage, postMessage, channelId, messageId) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      if (globalState.thread._id) {
-        postReply({ variables: { message_id: message_id, body: message }})
+      if (messageId) {
+        postReply({ variables: { messageId: messageId, body: message }})
       } else {
-        postMessage({ variables: { channel_id: channel_id, body: message }});
+        postMessage({ variables: { channelId: channelId, body: message }});
       }
       setMessage('');
     }
@@ -24,11 +24,11 @@ const MessageInput = () =>  {
   return (
     <input 
       type="text"
-      placeholder={globalState.channel.name}
+      placeholder={channelName}
       value={message}
       onChange={e => setMessage(e.target.value)}
-      onKeyDown={e => sendMessage(e, message, setMessage, postMessage, globalState.channel._id, globalState.thread._id)}/>
-  );
+      onKeyDown={e => sendMessage(e, message, setMessage, postMessage, channelId, threadId)}/>
+  )
 }
 
-export default MessageInput;
+export default MessageInput

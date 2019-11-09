@@ -2,12 +2,12 @@ import React, { useCallback, useEffect } from 'react'
 import produce from 'immer'
 import { useQuery } from '@apollo/react-hooks'
 import { GET_MESSAGES, MESSAGES_SUBSCRIPTION } from '../../gql/message/index'
-import useGlobal from "../../store"
 import Message from './Message'
+import { useStateValue } from '../../context/state'
 
 const Channel = () => {
-  const [globalState] = useGlobal();
-  const { loading, error, data, subscribeToMore } = useQuery(GET_MESSAGES, { variables: { channel_id: globalState.channel._id} })
+  const [{channelId, channelName}] = useStateValue()
+  const { loading, error, data, subscribeToMore } = useQuery(GET_MESSAGES, { variables: { channelId: channelId} })
   
   const subscribeToMessages = useCallback(() => subscribeToMore({
     document: MESSAGES_SUBSCRIPTION,
@@ -15,7 +15,7 @@ const Channel = () => {
       if (!subscriptionData.data) return prev
       const newMessage = subscriptionData.data.messagePosted
       if (prev.messages.find((message) => message._id === newMessage._id)) return prev
-      if (globalState.channel._id !== newMessage.channel_id) return prev
+      if (channelId !== newMessage.channelId) return prev
       return produce(prev, (next) => { next.messages.push(newMessage) })
     }
   }));
@@ -24,13 +24,13 @@ const Channel = () => {
 
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error</p>
-  
+
   return (
     <div>
-      <h1>Channel: {globalState.channel.name}</h1>
-      {data.messages.map(({_id, author, body, replies }) => 
-        <Message key={_id} id={_id} author={author} body={body} replies={replies}></Message>
-      )}
+      <h1>Channel: {channelName}</h1>
+      {data.messages.map(message => (
+        <Message key={message._id} messageId={message._id} author={message.author} body={message.body} replies={message.replies}></Message>
+      ))}
     </div>
   )
 }

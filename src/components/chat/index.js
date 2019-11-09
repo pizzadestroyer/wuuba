@@ -1,31 +1,25 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
-
-import useGlobal from "../../store";
-
 import Channel from './Channel'
 import MessageInput from './MessageInput'
 import ChannelList from './ChannelList'
 import CreateChannel from './CreateChannel'
 import Thread from './Thread'
+import { useStateValue } from '../../context/state'
 
 const Chat = () => {
-
-  const [globalState] = useGlobal();
-
+  const [{threadId}] = useStateValue()
   return (
-    <div>
-      <Grid container>
-        <Grid item xs={3}>
-          <ChannelList></ChannelList>
-          <CreateChannel></CreateChannel>
-        </Grid>
-        <Grid item xs={9}>
-          {globalState.thread._id ? <Thread></Thread> : <Channel></Channel>}
-          <MessageInput></MessageInput>
-        </Grid>
+    <Grid container>
+      <Grid item xs={3}>
+        <ChannelList></ChannelList>
+        <CreateChannel></CreateChannel>
       </Grid>
-    </div>
+      <Grid item xs={9}>
+        {threadId ? <Thread></Thread> : <Channel></Channel>}
+        <MessageInput></MessageInput>
+      </Grid>
+    </Grid>
   )
 }
 

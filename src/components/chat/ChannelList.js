@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect } from 'react';
-import produce from 'immer';
-import { useQuery } from '@apollo/react-hooks';
-import useGlobal from "../../store";
-import { GET_CHANNELS , CHANNELS_SUBSCRIPTION} from '../../gql/channel/index';
+import React, { useCallback, useEffect } from 'react'
+import produce from 'immer'
+import { useQuery } from '@apollo/react-hooks'
+import { GET_CHANNELS , CHANNELS_SUBSCRIPTION} from '../../gql/channel/index'
+import { useStateValue } from '../../context/state'
 
 function ChannelList() {
-  const [globalState, globalActions] = useGlobal();
-  const { loading, error, data, subscribeToMore } = useQuery(GET_CHANNELS, { variables: globalState.channel._id})
-  
+  const [{channelId}, dispatch] = useStateValue()
+  const { loading, error, data, subscribeToMore } = useQuery(GET_CHANNELS, { variables: channelId})
+
   const subscribeToNew = useCallback(() => subscribeToMore({
     document: CHANNELS_SUBSCRIPTION,
     updateQuery: (prev, { subscriptionData }) => {
@@ -19,6 +19,7 @@ function ChannelList() {
   }))
 
   useEffect(() => subscribeToNew()) 
+
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error</p>
 
@@ -26,8 +27,18 @@ function ChannelList() {
     <div>
       {data.channels.map((channel) => (
         <p key={channel._id} onClick={() => {
-          globalActions.setChannel(channel)
-          globalActions.setThread(undefined)
+          dispatch({
+            type: 'setChannelId',
+            channelId: channel._id
+          })
+          dispatch({
+            type: 'setChannelName',
+            channelName: channel.name
+          })
+          dispatch({
+            type: 'setThreadId',
+            threadId: undefined
+          })
         }}>
         {channel.name}</p>
       ))}
