@@ -9,7 +9,7 @@ const Auth = () => {
   const [signup] = useMutation(SIGN_UP)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [dispatch] = useStateValue()
+  const [{}, dispatch] = useStateValue()
 
   const handleClick = (e) => {
     e.preventDefault()
@@ -28,7 +28,7 @@ const Auth = () => {
       const authToken = await signup({ variables: { username: username, password: password } })
       dispatch({
         type: 'setAuthToken',
-        authToken: authToken.data.login.token
+        authToken: authToken.data.signup.token
       })
     }
   }
